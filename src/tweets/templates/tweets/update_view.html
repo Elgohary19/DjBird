@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Edit Tweet | {{block.super}}     {% endblock title%}
+{% block content %}
+<div class="update-tweet delete-modal">
+      <img src="{% static 'img/35-512.png' %}">
+    {% include "tweets/form.html" with form=form btn_title='Update'%}
+    </div>
+{% endblock content %}
+
+
+

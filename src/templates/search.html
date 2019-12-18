@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block script %}
+<script>
+    $(document).ready(function() {
+       loadTweetContainer("tweet-container")
+    });
+</script>
+{% endblock script %}
+
+{% block content %}
+{% load static %}
+    <div class="row align-items-start">
+        <div class="col-sm-12">
+            {% if request.GET.q %}
+                <p class="lead"> Result for {{request.GET.q }}</p>
+            <hr/>
+            {% endif %}
+        </div>
+        <div class="col-sm-9 " style="padding-left: 50px" >
+            <h1>Tweets</h1>
+
+
+            <div id="tweet-container" data-url="/api/search">
+
+            </div>
+
+            <a href="#" id="loadMore"> Load More Tweets.. </a>
+               <div class='col-sm-3 user-data'  >
+                    <h1>Users</h1>
+                   <hr/>
+                   {% for user in users %}
+                        <a href="/{{user.username}}/">{{user.username}}</a><br/>
+                   {% empty %}
+                   <p> No Users found </p>
+                   {% endfor %}
+               </div>
+
+        </div>
+    </div>
+
+{% endblock content %}

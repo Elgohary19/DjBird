@@ -1,0 +1,130 @@
+body{
+    background-color: #f8f9fa;
+}
+/* header style starts here */
+.navbar-brand img{
+width:50px;
+}
+.navbar-nav {
+    margin-right: 0;
+    margin-left: auto;
+}
+.nav-item .nav-link {
+        background-color: #1b2a3d;
+    margin:0rem 0.2rem;
+    color: #fff !important;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+}
+.nav-item:first-of-type .nav-link {
+    background-color: #1b2a3d;
+    margin: 0rem 0.2rem;
+    color: #fff !important;
+    border-radius: 2rem;
+    padding: 0.5rem;
+    display: inline-block;
+    width: 100px;
+    text-align: center;
+}
+.nav-item:last-of-type .nav-link{
+      background-color: transparent;
+    color: #1b2a3d !important;
+}
+.main-container .content-container{
+padding: 1rem;
+}
+.user-data{
+    padding: 1rem;
+
+    text-align: center;
+    border-radius: 5px;
+        display: flex;
+    flex-flow: column;
+    align-items: center;
+    width: 100%;
+    background-color: #fff;
+}
+.user-data img {
+        width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.user-data .following-data{
+       display: flex;
+    justify-content: space-around;
+    padding: 1rem 0;
+    width: 100%;
+
+}
+.user-data a{
+        font-size: 1.5rem;
+    text-decoration: none;
+    color: #007bfe;
+}
+.user-data .following-data span {
+      width: 50%;
+    line-height: 1.5rem;
+
+}
+.user-data .following-data span:first-of-type{
+       border-right: 1px solid #ddd;
+}
+/* header style ends here */
+
+.tweet-form textarea{
+height: 165px;
+}
+#tweetCharsLeft{
+    color: #ff8100;
+    margin-left: 1rem;
+}
+.media-body{
+ word-break:break-all;
+    color:#203554;
+}
+.grey-color{
+    color:#203554 !important;
+}
+#navbar-search-form{
+    position: relative;
+}
+.tweet-action{
+    padding:0rem 0.3rem;
+}
+#navbar-search-form .search-btn{
+        position: absolute;
+    left: auto;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    text-align: center;
+}
+#navbar-search-form .search-btn span {
+        position: relative;
+    width: 30px;
+
+}
+#navbar-search-form .search-btn input {
+        opacity: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+}
+.tweet-listing-home{
+    position: relative;
+}
+
+.tweet-listing-home:after{
+    content:'';
+    position: absolute;
+
+}

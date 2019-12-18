@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block script %}
+<script>
+    $(document).ready(function() {
+        $("form input").addClass('form-control')
+    });
+</script>
+{% endblock script %}
+{% block content %}
+  <p>Logged out!</p>
+  <a href="{% url 'login'%}">Click here to login again.</a>
+{% endblock %}

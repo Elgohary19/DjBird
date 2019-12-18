@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block script %}
+<script>
+    $(document).ready(function() {
+       loadTweetContainer("tweet-container")
+    });
+</script>
+{% endblock script %}
+{% block title %}Home | {{block.super}}     {% endblock title%}
+
+{% block content %}
+
+{% load static %}
+    <div class="row align-items-start">
+        <div class='col-sm-3 col-xs-12 user-data'  >
+
+            <img src="{% static 'img/image_placeholder.png' %}" alt="user image">
+            <a href="/{{ user.username }}">{{ request.user }}</a>
+<!--            <div class="following-data">-->
+<!--                <span>15 Follower</span>-->
+<!--                <span>49 Following</span>-->
+<!--            </div>-->
+        </div>
+        <div class="col-sm-9 tweet-listing-home" style="padding-left: 50px" >
+            {% if not request.GET.q %}
+            <div class=''>
+                {% include "tweets/form.html" with form=create_form action_url=create_url btn_title='Tweet' form_class='tweet-form'%}
+            </div>
+            <hr>
+           {% endif %}
+
+            <div id="tweet-container" data-url="/api/tweet">
+
+            </div>
+
+            <a href="#" id="loadMore"> Load More Tweets.. </a>
+
+
+        </div>
+    </div>
+
+{% endblock content %}

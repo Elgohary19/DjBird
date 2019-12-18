@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Delete Tweet | {{block.super}}     {% endblock title%}
+
+{% block content %}
+<div class="delete-modal">
+       <img src="{% static 'img/delete.png' %}">
+        <p>Are you sure you want to delete the tweet  "{{ object }}"?</p>
+    <form method="post">{% csrf_token %}
+
+        <input type="submit" class="btn btn-delete" value="Confirm">
+    </form>
+    </div>
+
+{% endblock content %}
+
+

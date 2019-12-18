@@ -1,0 +1,14 @@
+
+<form id="navbar-search-form" class="form-inline" method='GET' action='{% url "search" %}'>
+    <div class="form-group">
+        <input class="form-control" type="text" name="q" placeholder="Your Search" value='{{ request.Get.q }}'/>
+    </div>
+    <div class="search-btn">
+        <span><i class="fas fa-search"></i>
+        <input class="btn btn-default" type="submit" value="Search"/>
+        </span>
+
+    </div>
+</form>
+
+
