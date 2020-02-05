@@ -54,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+AUTH_USER_MODEL = 'accounts.UserProfile'
 
 ROOT_URLCONF = 'tweetme.urls'
 
@@ -132,6 +133,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static-storage"),
+    os.path.join(BASE_DIR, "user_img"),
 ]
 
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static-serve")

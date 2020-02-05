@@ -36,6 +36,17 @@ class LikeToggleAPIView(APIView):
             return Response({'liked': is_liked})
         return Response({"message": message}, status=400)
 
+class DisLikeToggleAPIView(APIView):
+        permission_classes = [permissions.IsAuthenticated]
+
+        def get(self, request, pk, format=None):
+            tweet_q = Tweet.objects.filter(pk=pk)
+            message = "Not allowed"
+            if request.user.is_authenticated:
+                is_disliked = Tweet.objects.disLike_toggle(request.user, tweet_q.first())
+                return Response({'disliked': is_disliked})
+            return Response({"message": message}, status=400)
+
 
 
 class TweetCreateAPIView(CreateAPIView):
@@ -98,7 +109,7 @@ class TweetListAPIView(ListAPIView):
         if requested_user:
             q = Tweet.objects.filter(user__username=requested_user).order_by("-timestamp")
         else:
-            users_im_following = self.request.user.profile.get_following()
+            users_im_following = self.request.user.get_following()
             q1 = Tweet.objects.filter(user__in=users_im_following)
             q2 = Tweet.objects.filter(user=self.request.user)
             q = (q1 | q2).distinct().order_by("-timestamp")

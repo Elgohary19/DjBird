@@ -51,7 +51,7 @@
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
-
+    
     function loadTweetContainer(tweetContainerID, fetchOneId){
         var query = getParameterByName('q');
         var tweetList = [];
@@ -76,6 +76,29 @@
                 url: likedURL,
                 success: function(data){
                     if (data.liked){
+                        this_.find('i').removeClass('far').addClass("fas")
+                    } else{
+                        this_.find('i').removeClass('fas').addClass("far")
+                    }
+                },
+                error: function(data){
+                    console.log("error");
+                    console.log(data)
+                }
+            })
+        });
+
+        $(document.body).on("click",".tweet-dislike", function(e) {
+            e.preventDefault();
+            var this_ = $(this);
+            var tweetId = this_.attr("data-id");
+            var dislikedURL= '/api/tweet/'+ tweetId + "/dislike/";
+            // this_.text("DisLiked");
+            $.ajax({
+                method: "GET",
+                url: dislikedURL,
+                success: function(data){
+                    if (data.disliked){
                         this_.find('i').removeClass('far').addClass("fas")
                     } else{
                         this_.find('i').removeClass('fas').addClass("far")
@@ -163,11 +186,14 @@
                 preContent = "<span class='grey-color'>Replay to @ " + tweetValue.parent.user.username + " </span></br>"
             }
 
-            var verb = '<i class="far fa-heart"></i>\n' +
-                    '\n';
+            var verb = '<i class="far fa-heart"></i>\n' + '\n';
             if (tweetValue.did_like){
-                verb = '<i class="fas fa-heart"></i>\n' +
-                        '\n';
+                verb = '<i class="fas fa-heart"></i>\n' + '\n';
+            }
+
+            var verbdislike = '<i class="far fa-thumbs-down"></i>\n' + '\n';
+            if (tweetValue.did_dislike){
+                verbdislike = '<i class="fas fa-thumbs-down"></i>\n' + '\n';
             }
 
             tweetContent ="<span class='content'>" + tweetValue.content + "</span><br/> via <a href='"+ tweetValue.user.url +"'>" +
@@ -175,11 +201,16 @@
                 tweetValue.id + "'><i class=\"far fa-eye\"></i>\n" +
                     "\n</a> | "+ "<a class='retweetBtn tweet-action' href='/tweet/" + tweetValue.id +
                 "/retweet/'><i class=\"fas fa-retweet\"></i>\n" +
-                    "\n</a> | " + "<a href='#' class='tweet-like tweet-action' data-id ='" + tweetValue.id +"' >"
-                + verb + "(" + tweetValue.likes + ")</a>" +"| " +
+                    "\n</a> | " +
+                    "<a href='#' class='tweet-like tweet-action' data-id ='" + tweetValue.id +"' >" + verb + "(" + tweetValue.likes + ")</a>" +"| " +
+                    "<a href='#' class='tweet-dislike tweet-action' data-id ='" + tweetValue.id +"' >" + verbdislike + "(" + tweetValue.dislikes + ")</a>" +"| " +
                 "<a href='#' class='tweet-replay tweet-action' data-user='" + tweetValue.user.username + "' data-id ='" + replayId + "' ><i class=\"fas fa-reply\"></i>\n" +
                     "\n </a>" +
-                    "<div class=\"margin-right-zero\"><a class=\"edit-tweet\" href='tweet/"+tweetValue.id+"/update'><i class=\"fas fa-edit\"></i></a><a class=\"delete-tweet\" href='tweet/"+tweetValue.id+"/delete'><i class=\"fas fa-trash\"></i></a>"
+                      "'{% if user.is_authenticated %}'<div class=\"margin-right-zero\">" +
+                      "<a class=\"edit-tweet\" href='tweet/"+tweetValue.id+"/update'>" +
+                      "<i class=\"fas fa-edit\"></i></a><a class=\"delete-tweet\" href='tweet/"+tweetValue.id+"/delete'>" +
+                      "<i class=\"fas fa-trash\"></i></a> </div>  '{% endif %}'"
+
 
             ;
 

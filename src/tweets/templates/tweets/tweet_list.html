@@ -15,7 +15,9 @@
     <div class="row align-items-start">
         <div class='col-sm-3 col-xs-12 user-data'  >
 
-            <img src="{% static 'img/image_placeholder.png' %}" alt="user image">
+
+            <img src="{% if user.avatar %}{{ user.get_avatar }}{% else %}{% static 'img/image_placeholder.png' %}{% endif %}" alt="user image">
+
             <a href="/{{ user.username }}">{{ request.user }}</a>
 <!--            <div class="following-data">-->
 <!--                <span>15 Follower</span>-->

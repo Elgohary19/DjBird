@@ -14,7 +14,7 @@
         <h2>{{ object.username }} </h2>
         {% include "registration/profile.html" %}
 
-           <a class='btn btn-link' href='{{ object.profile.get_follow_url}}'>
+           <a class='btn btn-link' href='{{ object.get_follow_url}}'>
                 {% if following %} Unfollow {% else %} Follow {% endif %}
             </a>
         <hr>
@@ -24,8 +24,8 @@
 
  <hr>
 
-         <p>Following : {{ object.profile.get_following.count }}</p>
-                {% for user in object.profile.get_following %}
+         <p>Following : {{ object.get_following.count }}</p>
+                {% for user in object.get_following %}
                  <a href="/{{ user.username }}" > {{ user.username }}</a>
                 {% empty %}
                     <p>Not following any users</p>
@@ -35,7 +35,7 @@
 
             <p>Followed By</p>
                 {% for profile in object.followed_by.all %}
-                <a href="/{{ profile.user.username }}" >{{ profile.user.username }}</a>
+                <a href="/{{ profile.username }}" >{{ profile.username }}</a>
                 {% empty %}
                     <p>Not followed by any users</p>
                 {% endfor %}
@@ -43,7 +43,7 @@
 
             <p>Recommended To Follow</p>
                 {% for profile in recommended %}
-                <a href="/{{ profile.user.username }}" >{{ profile.user.username }}</a>
+                <a href="/{{ profile.username }}" >{{ profile.username }}</a>
                 {% empty %}
                     <p>Not followed by any users</p>
                 {% endfor %}

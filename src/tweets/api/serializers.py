@@ -13,6 +13,8 @@ class ParentTweetModelSerializer(serializers.ModelSerializer):
     timesince = serializers.SerializerMethodField()
     likes = serializers.SerializerMethodField()
     did_like = serializers.SerializerMethodField()
+    dislikes = serializers.SerializerMethodField()
+    did_dislike = serializers.SerializerMethodField()
 
     class Meta:
         model = Tweet
@@ -24,7 +26,9 @@ class ParentTweetModelSerializer(serializers.ModelSerializer):
             'date_display',
             'timesince',
             'likes',
+            'dislikes',
             'did_like',
+            'did_dislike',
         ]
 
     def get_did_like(self, object):
@@ -40,6 +44,21 @@ class ParentTweetModelSerializer(serializers.ModelSerializer):
 
     def get_likes(self, object):
         return object.liked.all().count()
+
+    def get_did_dislike(self, object):
+        request = self.context.get("request")
+        try:
+            user = request.user
+            if user.is_authenticated:
+                if user in object.disliked.all():
+                    return True
+        except:
+            pass
+        return False
+
+    def get_dislikes(self, object):
+        return object.disliked.all().count()
+
     def get_date_display(self, obj):
         return obj.timestamp.strftime("%b %d, %Y | at %I %M %p")
 
@@ -55,6 +74,8 @@ class TweetModelSerializer(serializers.ModelSerializer):
     parent = ParentTweetModelSerializer(read_only=True)
     likes = serializers.SerializerMethodField()
     did_like = serializers.SerializerMethodField()
+    dislikes = serializers.SerializerMethodField()
+    did_dislike = serializers.SerializerMethodField()
 
 
     class Meta:
@@ -69,7 +90,9 @@ class TweetModelSerializer(serializers.ModelSerializer):
             'timesince',
             'parent',
             'likes',
+            'dislikes',
             'did_like',
+            'did_dislike',
             'replay',
         ]
 
@@ -88,6 +111,20 @@ class TweetModelSerializer(serializers.ModelSerializer):
 
     def get_likes(self, object):
         return object.liked.all().count()
+
+    def get_did_dislike(self, object):
+        request = self.context.get("request")
+        try:
+            user = request.user
+            if user.is_authenticated:
+                if user in object.disliked.all():
+                    return True
+        except:
+            pass
+        return False
+
+    def get_dislikes(self, object):
+        return object.disliked.all().count()
 
 
     def get_date_display(self, obj):

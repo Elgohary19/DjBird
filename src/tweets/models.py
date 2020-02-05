@@ -36,7 +36,6 @@ class TweetManager(models.Manager):
         obj.save()
         return obj
 
-
     def like_toggle(self, user, tweet_obj):
         if user in tweet_obj.liked.all():
             is_liked = False
@@ -46,6 +45,16 @@ class TweetManager(models.Manager):
             tweet_obj.liked.add(user)
         return is_liked
 
+    def disLike_toggle(self, user, tweet_obj):
+        if user in tweet_obj.disliked.all():
+            is_disliked = False
+            tweet_obj.disliked.remove(user)
+        else:
+            is_disliked = True
+            tweet_obj.disliked.add(user)
+        return is_disliked
+
+
 
 class Tweet(models.Model):
     parent = models.ForeignKey("self", blank=True, null=True, on_delete=models.CASCADE)
@@ -53,6 +62,7 @@ class Tweet(models.Model):
     content = models.CharField(max_length=250, validators=[validate_content])
     replay = models.BooleanField(verbose_name='Is a replay', default=False)
     liked = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='Liked')
+    disliked = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='disliked')
     updated = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     objects = TweetManager()
