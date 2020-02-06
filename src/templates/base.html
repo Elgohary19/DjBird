@@ -253,7 +253,7 @@
 
             ;
             }else{
-              tweetContent ="<img class='tweetImg' src='' title='" + tweetValue.user.username + " '><span class='content'>" + tweetValue.content + "</span><br/> via <a href='"+ tweetValue.user.url +"'>" +
+              tweetContent ="<img class='tweetImg' src='"+ tweetValue.user.get_avatar +"' title='" + tweetValue.user.username + " '><span class='content'>" + tweetValue.content + "</span><br/> via <a href='"+ tweetValue.user.url +"'>" +
                 tweetValue.user.username + "</a> | "+ tweetValue.date_display + " | " +"<a class='tweet-action' href='/tweet/" +
                 tweetValue.id + "'><i class=\"far fa-eye\"></i>\n" +
                     "\n</a> | "+ "<a class='retweetBtn tweet-action' href='/tweet/" + tweetValue.id +
