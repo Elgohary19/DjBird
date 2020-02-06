@@ -90,6 +90,16 @@ height: 171px;
     align-items: center;
     justify-content: end;
     flex-wrap: wrap;
+        padding-left: 59px;
+    position: relative;
+}
+.tweetImg {
+    height: 50px;
+    width: 50px;
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    object-fit: cover;
 }
 .media {
            margin: 1rem 0rem 0.5rem;

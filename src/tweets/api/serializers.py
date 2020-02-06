@@ -125,8 +125,6 @@ class TweetModelSerializer(serializers.ModelSerializer):
 
     def get_dislikes(self, object):
         return object.disliked.all().count()
-
-
     def get_date_display(self, obj):
         return obj.timestamp.strftime("%b %d, %Y | at %I %M %p")
 

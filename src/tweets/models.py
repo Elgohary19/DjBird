@@ -40,7 +40,7 @@ class TweetManager(models.Manager):
         if user in tweet_obj.liked.all():
             is_liked = False
             tweet_obj.liked.remove(user)
-        else:
+        else :
             is_liked = True
             tweet_obj.liked.add(user)
         return is_liked
@@ -53,7 +53,6 @@ class TweetManager(models.Manager):
             is_disliked = True
             tweet_obj.disliked.add(user)
         return is_disliked
-
 
 
 class Tweet(models.Model):

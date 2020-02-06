@@ -51,7 +51,7 @@
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
-    
+
     function loadTweetContainer(tweetContainerID, fetchOneId){
         var query = getParameterByName('q');
         var tweetList = [];
@@ -66,26 +66,47 @@
 
 
         $(document.body).on("click",".tweet-like", function(e) {
-            e.preventDefault();
-            var this_ = $(this);
-            var tweetId = this_.attr("data-id");
-            var likedURL= '/api/tweet/'+ tweetId + "/like/";
-            // this_.text("Liked");
+          e.preventDefault();
+          var this_ = $(this);
+          var tweetId = this_.attr("data-id");
+          var likedURL = '/api/tweet/' + tweetId + "/like/";
+          var dislikedURL = '/api/tweet/' + tweetId + "/dislike/";
+          // this_.text("Liked");
+          $.ajax({
+            method: "GET",
+            url: likedURL,
+            success: function (data) {
+              if (data.liked) {
+                console.log('firstlike add - no dislike');
+                this_.find('i').removeClass('far').addClass("fas")
+              } else {
+                console.log('firstlike remove - no dislike');
+                this_.find('i').removeClass('fas').addClass("far")
+              }
+            },
+            error: function (data) {
+              console.log("error");
+              console.log(data)
+            }
+          })
+
+          if (this_.parent().find('.tweet-dislike').find('i').hasClass('fas'))
+          {
+
             $.ajax({
-                method: "GET",
-                url: likedURL,
-                success: function(data){
-                    if (data.liked){
-                        this_.find('i').removeClass('far').addClass("fas")
-                    } else{
-                        this_.find('i').removeClass('fas').addClass("far")
-                    }
-                },
-                error: function(data){
-                    console.log("error");
-                    console.log(data)
+              method: "GET",
+              url: dislikedURL,
+              success: function (data) {
+                if (!data.disliked) {
+                   this_.parent().find('.tweet-dislike').find('i').removeClass("fas").addClass('far')
                 }
+              },
+              error: function (data) {
+                console.log("error");
+                console.log(data)
+              }
             })
+        }
         });
 
         $(document.body).on("click",".tweet-dislike", function(e) {
@@ -93,6 +114,7 @@
             var this_ = $(this);
             var tweetId = this_.attr("data-id");
             var dislikedURL= '/api/tweet/'+ tweetId + "/dislike/";
+            var likedURL= '/api/tweet/'+ tweetId + "/like/";
             // this_.text("DisLiked");
             $.ajax({
                 method: "GET",
@@ -109,6 +131,23 @@
                     console.log(data)
                 }
             })
+
+            if (this_.parent().find('.tweet-like').find('i').hasClass('fas'))
+            {
+               $.ajax({
+                method: "GET",
+                url: likedURL,
+                success: function (data) {
+                  if (!data.liked) {
+                    this_.parent().find('.tweet-like').find('i').removeClass("fas").addClass('far')
+                  }
+                },
+                error: function (data) {
+                  console.log("error");
+                  console.log(data)
+                }
+              })
+            }
         });
 
         $(document.body).on("click",".tweet-replay", function(e) {
@@ -196,7 +235,25 @@
                 verbdislike = '<i class="fas fa-thumbs-down"></i>\n' + '\n';
             }
 
-            tweetContent ="<span class='content'>" + tweetValue.content + "</span><br/> via <a href='"+ tweetValue.user.url +"'>" +
+            if (tweetValue.user.username == '{{ request.user |safe }}'){
+              tweetContent ="<img class='tweetImg' src='" + "{% if user.avatar %}{{ user.get_avatar }}{% endif %}" + "' title='" + tweetValue.user.username + " '><span class='content'>" + tweetValue.content + "</span><br/> via <a href='"+ tweetValue.user.url +"'>" +
+                tweetValue.user.username + "</a> | "+ tweetValue.date_display + " | " +"<a class='tweet-action' href='/tweet/" +
+                tweetValue.id + "'><i class=\"far fa-eye\"></i>\n" +
+                    "\n</a> | "+ "<a class='retweetBtn tweet-action' href='/tweet/" + tweetValue.id +
+                "/retweet/'><i class=\"fas fa-retweet\"></i>\n" +
+                    "\n</a> | " +
+                    "<a href='#' class='tweet-like tweet-action' data-id ='" + tweetValue.id +"' >" + verb + "(" + tweetValue.likes + ")</a>" +"| " +
+                    "<a href='#' class='tweet-dislike tweet-action' data-id ='" + tweetValue.id +"' >" + verbdislike + "(" + tweetValue.dislikes + ")</a>" +"| " +
+                "<a href='#' class='tweet-replay tweet-action' data-user='" + tweetValue.user.username + "' data-id ='" + replayId + "' ><i class=\"fas fa-reply\"></i>\n" +
+                    "\n </a><div class=\"margin-right-zero\">" +
+                      "<a class=\"edit-tweet\" href='tweet/"+tweetValue.id+"/update'>" +
+                      "<i class=\"fas fa-edit\"></i></a><a class=\"delete-tweet\" href='tweet/"+tweetValue.id+"/delete'>" +
+                      "<i class=\"fas fa-trash\"></i></a> </div>"
+
+
+            ;
+            }else{
+              tweetContent ="<img class='tweetImg' src='' title='" + tweetValue.user.username + " '><span class='content'>" + tweetValue.content + "</span><br/> via <a href='"+ tweetValue.user.url +"'>" +
                 tweetValue.user.username + "</a> | "+ tweetValue.date_display + " | " +"<a class='tweet-action' href='/tweet/" +
                 tweetValue.id + "'><i class=\"far fa-eye\"></i>\n" +
                     "\n</a> | "+ "<a class='retweetBtn tweet-action' href='/tweet/" + tweetValue.id +
@@ -206,13 +263,8 @@
                     "<a href='#' class='tweet-dislike tweet-action' data-id ='" + tweetValue.id +"' >" + verbdislike + "(" + tweetValue.dislikes + ")</a>" +"| " +
                 "<a href='#' class='tweet-replay tweet-action' data-user='" + tweetValue.user.username + "' data-id ='" + replayId + "' ><i class=\"fas fa-reply\"></i>\n" +
                     "\n </a>" +
-                      "'{% if user.is_authenticated %}'<div class=\"margin-right-zero\">" +
-                      "<a class=\"edit-tweet\" href='tweet/"+tweetValue.id+"/update'>" +
-                      "<i class=\"fas fa-edit\"></i></a><a class=\"delete-tweet\" href='tweet/"+tweetValue.id+"/delete'>" +
-                      "<i class=\"fas fa-trash\"></i></a> </div>  '{% endif %}'"
-
-
-            ;
+                      "<div class=\"margin-right-zero\"></div>";
+            }
 
             if (preContent){
                 container = openingContainerDic +" <div class=\"media-body\">" + preContent + tweetContent + "</a></div></div><hr/>"
